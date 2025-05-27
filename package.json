@@ -2,7 +2,7 @@
   "name": "gamesource",
   "version": "0.0.0",
   "private": true,
-  "author": "Your Name",
+  "author": "Milan Stankovic",
   "type": "module",
   "scripts": {
     "dev": "vite",
