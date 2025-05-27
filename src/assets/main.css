@@ -1,7 +1,7 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   /* overflow-x: hidden; */
 }
 
@@ -59,7 +59,7 @@ header .header_container {
 
 header .header_container .logo {
   flex-grow: 1;
-  font-family: "Bungee Inline", cursive;
+  font-family: 'Bungee Inline', cursive;
   font-size: 30px;
 }
 header .header_container .logo a {
@@ -100,7 +100,7 @@ footer {
 }
 
 footer .logo {
-  font-family: "Bungee Inline", cursive;
+  font-family: 'Bungee Inline', cursive;
   font-size: 30px;
   line-height: 121px;
   text-align: center;
