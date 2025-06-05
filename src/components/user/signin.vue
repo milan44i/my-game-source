@@ -1,12 +1,14 @@
 <template>
   <div class="signin_container">
-    <!-- loader -->
+    <div v-show="userStore.loading" class="text-center">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </div>
 
-    <Form @submit="onSubmit" :validation-schema="formSchema">
+    <Form v-show="!userStore.loading" @submit="onSubmit" :validation-schema="formSchema">
       <h1 v-text="!type ? 'Sign in' : 'Register'"></h1>
 
       <div class="form-group">
-        <Field name="email" :value="'francis@gmail.com'" v-slot="{ field, errors, errorMessage }">
+        <Field name="email" :value="'mln6stankovic@gmail.com'" v-slot="{ field, errors, errorMessage }">
           <input
             type="text"
             class="form-control"
@@ -21,7 +23,7 @@
       </div>
 
       <div class="form-group">
-        <Field name="password" :value="'testing123'" v-slot="{ field, errors, errorMessage }">
+        <Field name="password" :value="'qqqqqq'" v-slot="{ field, errors, errorMessage }">
           <input
             type="password"
             class="form-control"
@@ -50,7 +52,11 @@
 import { Field, Form } from 'vee-validate'
 import * as yup from 'yup'
 import { ref } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { useToast } from 'vue-toast-notification'
 
+const userStore = useUserStore()
+const toast = useToast()
 const type = ref(false)
 const formSchema = yup.object({
   email: yup.string().required('The email is required').email('Not a valid email'),
@@ -58,6 +64,21 @@ const formSchema = yup.object({
 })
 
 function onSubmit(values, { resetForm }) {
-  console.log(values)
+  if (type.value) {
+    userStore.register(values.email, values.password)
+  } else {
+    userStore.login(values.email, values.password)
+  }
 }
+
+userStore.$onAction(({ name, after, onError }) => {
+  if (name === 'login' || name === 'register') {
+    after(() => {
+      toast.success(`You have successfully ${name === 'login' ? 'logged in' : 'registered'}!`)
+    })
+    onError(error => {
+      toast.error(`${error.message}`)
+    })
+  }
+})
 </script>
