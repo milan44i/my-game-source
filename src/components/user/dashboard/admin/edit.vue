@@ -122,7 +122,6 @@ const veditor = ref(null)
 const article = ref({})
 
 function onSubmit(values, { resetForm }) {
-  console.log('Form submitted with values:', values)
   if (!veditor.value && article.value.editor) {
     values.editor = article.value.editor
   }
@@ -130,7 +129,6 @@ function onSubmit(values, { resetForm }) {
 }
 
 function updateEditor(value) {
-  console.log('Editor content updated:', value)
   veditor.value = value
 }
 

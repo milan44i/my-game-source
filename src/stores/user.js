@@ -1,24 +1,14 @@
 import { defineStore } from 'pinia'
 import router from '@/router'
 import { AUTH, DB } from '@/utils/firebase'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import errorCodes from '@/utils/fbcodes'
-
-// const defaultUser = {
-//   uid: null,
-//   email: null,
-//   firstName: null,
-//   lastName: null,
-//   isAdmin: null,
-// }
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: null,
     loading: false,
-    // error: null,
-    // auth: false,
   }),
   getters: {
     isAuthenticated: state => !!state.user,
@@ -38,7 +28,6 @@ export const useUserStore = defineStore('user', {
           isAdmin: false,
         }
         this.user = newUser
-        // this.auth = true
         await setDoc(doc(DB, 'users', this.user.uid), newUser)
         router.push({ name: 'dashboard' })
       } catch (error) {
@@ -54,7 +43,6 @@ export const useUserStore = defineStore('user', {
       try {
         const userCredential = await signInWithEmailAndPassword(AUTH, email, password)
         this.user = await this.fetchUser(userCredential.user.uid)
-        // this.auth = true
         router.push({ name: 'dashboard' })
       } catch (error) {
         this.error = error.message
@@ -84,6 +72,23 @@ export const useUserStore = defineStore('user', {
         }
       } catch (error) {
         throw new Error(`${errorCodes(error.code)}`)
+      }
+    },
+
+    async updateProfile(userData) {
+      this.loading = true
+      try {
+        const userRef = doc(DB, 'users', this.user.uid)
+        await updateDoc(userRef, {
+          ...userData,
+        })
+        this.user = { ...this.user, ...userData }
+      } catch (error) {
+        this.error = error.message
+        console.error('Error updating profile:', error)
+        throw new Error(`${errorCodes(error.code)}`)
+      } finally {
+        this.loading = false
       }
     },
   },

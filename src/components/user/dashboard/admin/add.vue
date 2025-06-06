@@ -112,12 +112,10 @@ const ratingArray = [0, 1, 2, 3, 4, 5]
 const veditor = ref(null)
 
 function onSubmit(values, { resetForm }) {
-  console.log('Form submitted with values:', values)
   articleStore.addArticle(values)
 }
 
 function updateEditor(value) {
-  console.log('Editor content updated:', value)
   veditor.value = value
 }
 </script>
