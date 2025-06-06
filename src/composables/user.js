@@ -13,7 +13,6 @@ export const updateProfile = () => {
   })
 
   function onSubmit(values) {
-    console.log(values)
     userStore.updateProfile(values)
   }
 

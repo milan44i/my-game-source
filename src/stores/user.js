@@ -4,6 +4,9 @@ import { AUTH, DB } from '@/utils/firebase'
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import errorCodes from '@/utils/fbcodes'
+import { useToast } from 'vue-toast-notification'
+
+const toast = useToast()
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -83,6 +86,7 @@ export const useUserStore = defineStore('user', {
           ...userData,
         })
         this.user = { ...this.user, ...userData }
+        toast.success('Profile updated successfully!')
       } catch (error) {
         this.error = error.message
         console.error('Error updating profile:', error)
